@@ -73,9 +73,10 @@ class TruckRetrieveApi(RetrieveView, UpdateView, DeleteView):
 
     def perform_update(self, instance, data):
         for key, value in data.iteritems():
-            setattr(instance, key, value)
+            if value:
+                setattr(instance, key, value)
         instance.save()
-        return data
+        return TruckSchema().dump(instance).data
 
     def perform_delete(self, instance, data):
         instance.delete()
@@ -101,6 +102,6 @@ class AssignTruckApi(CreateView):
         if truck:
             truck.busy = True
             truck.save()
-            return TruckSchema().dump(truck)
+            return TruckSchema().dump(truck).data
         else:
             return {"status": "No truck free for job"}
