@@ -14,7 +14,7 @@ class ApplicantApi(CreateView):
     schema_class = ApplicantSchema
 
     def perform_create(self, data):
-        return TruckSchema().dump(Truck.objects.filter(applicant__icontains=data["name"]), many=True)
+        return TruckSchema().dump(Truck.objects.filter(applicant__icontains=data["name"]), many=True).data
 
 
 class StreetApi(CreateView):
@@ -24,7 +24,7 @@ class StreetApi(CreateView):
     schema_class = StreetSchema
 
     def perform_create(self, data):
-        return TruckSchema().dump(Truck.objects.filter(address__icontains=data["street"]), many=True)
+        return TruckSchema().dump(Truck.objects.filter(address__icontains=data["street"]), many=True).data
 
 
 class ExpirationApi(CreateView):
@@ -39,7 +39,7 @@ class ExpirationApi(CreateView):
             expiration__year=date.year,
             expiration__month=date.month,
             expiration__day=date.day,
-        ), many=True)
+        ), many=True).data
 
 
 class TruckListApi(ListView, CreateView):
